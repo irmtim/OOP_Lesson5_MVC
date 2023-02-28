@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RepositoryFile implements Repository {
-    private UserMapper mapper = new UserMapper();
+    private Mapper mapper;
     private FileOperation fileOperation;
 
-    public RepositoryFile(FileOperation fileOperation) {
+    public RepositoryFile(FileOperation fileOperation, Mapper mapper) {
         this.fileOperation = fileOperation;
+        this.mapper = mapper;
     }
 
     @Override
@@ -36,11 +37,48 @@ public class RepositoryFile implements Repository {
         String id = String.format("%d", newId);
         user.setId(id);
         users.add(user);
+        saveRepository(users);
+        return id;
+    }
+
+    private void saveRepository(List<User> users) {
         List<String> lines = new ArrayList<>();
         for (User item: users) {
             lines.add(mapper.map(item));
         }
         fileOperation.saveAllLines(lines);
-        return id;
+    }
+
+    public void deleteUserFromRepository(String userId){
+        List<User> users = getAllUsers();
+        User foundUser = null;
+        for (User item : users //в цикле форич нельзя менять или удалять объект, только найти
+             ) {
+            if(item.getId().equals(userId)){
+                foundUser = item;
+            }
+        }
+        if (foundUser != null) {
+            users.remove(foundUser);
+        }
+        saveRepository(users);
+    }
+
+    @Override
+    public void updateUserInList(String userId) {
+        List<User> users = getAllUsers();
+        User foundUser = null;
+        for (User item : users
+        ) {
+            if(item.getId().equals(userId)){
+                foundUser = item;
+            }
+        }
+        if (foundUser != null) {
+            foundUser.setFirstName();
+
+            users.add(foundUser);
+        }
+        saveRepository(users);
     }
 }
