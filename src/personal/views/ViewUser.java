@@ -46,6 +46,13 @@ public class ViewUser {
         }
     }
 
+
+    private void caseUserUpdate() {
+        String id = prompt("Введите ИД пользователя для изменения: ");
+        userController.updateUser();
+
+    }
+
     private void caseUserDelete() {
         String id = prompt("Введите ИД пользователя для удаления: ");
         userController.deleteUser(id);

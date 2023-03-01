@@ -51,33 +51,32 @@ public class RepositoryFile implements Repository {
 
     public void deleteUserFromRepository(String userId){
         List<User> users = getAllUsers();
-        User foundUser = null;
-        for (User item : users //в цикле форич нельзя менять или удалять объект, только найти
-             ) {
-            if(item.getId().equals(userId)){
-                foundUser = item;
-            }
-        }
+        User foundUser = foundUserInList(userId, users);
         if (foundUser != null) {
             users.remove(foundUser);
         }
         saveRepository(users);
     }
 
-    @Override
-    public void updateUserInList(String userId) {
-        List<User> users = getAllUsers();
+    private static User foundUserInList(String userId, List<User> users) {
         User foundUser = null;
         for (User item : users
-        ) {
+             ) {
             if(item.getId().equals(userId)){
                 foundUser = item;
             }
         }
-        if (foundUser != null) {
-            foundUser.setFirstName();
+        return foundUser;
+    }
 
-            users.add(foundUser);
+    @Override
+    public void updateUserInList(User user) {
+        List<User> users = getAllUsers();
+        User foundUser = foundUserInList(user.getId(), users);
+        if (foundUser != null) {
+            foundUser.setFirstName(user.getFirstName());
+            foundUser.setLastName(user.getLastName());
+            foundUser.setPhone(user.getPhone());
         }
         saveRepository(users);
     }

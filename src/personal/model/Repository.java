@@ -8,5 +8,5 @@ public interface Repository {
 
     void deleteUserFromRepository(String userId);
 
-    void updateUserInList(String userId);
+    void updateUserInList(User user);
 }
