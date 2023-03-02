@@ -38,10 +38,12 @@ public class ViewUser {
                             caseUserDelete();
                             break;
                         case UPDATE:
+                            caseUserUpdate();
+                            break;
 
                 }
             } catch (Exception e) {
-                System.out.printf("%sПроизошла ошибка\n", e.getMessage());;
+                System.out.printf("%sПроизошла ошибка\n", e.getMessage());
             }
         }
     }
@@ -49,8 +51,33 @@ public class ViewUser {
 
     private void caseUserUpdate() {
         String id = prompt("Введите ИД пользователя для изменения: ");
-        userController.updateUser();
 
+        try {
+            User user = userController.readUser(id);
+
+            if (user == null)
+            {
+                System.out.println("Пользователь с ИД " + id + " не найден");
+                return;
+            }
+
+            System.out.println("Старое имя: " + user.getFirstName());
+            String firstName = prompt("Введите новое: ");
+            user.setFirstName(firstName);
+
+            System.out.println("Старая фамилия: " + user.getLastName());
+            String lastName = prompt("Введите новоую: ");
+            user.setLastName(lastName);
+
+            System.out.println("Старый номер телефона: " + user.getPhone());
+            String phone = prompt("Введите новый: ");
+            user.setPhone(phone);
+
+            userController.updateUser(user);
+        }
+        catch (Exception e) {
+            System.out.printf("%sПроизошла ошибка\n", e.getMessage());
+        }
     }
 
     private void caseUserDelete() {

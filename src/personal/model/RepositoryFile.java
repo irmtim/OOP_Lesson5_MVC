@@ -54,8 +54,10 @@ public class RepositoryFile implements Repository {
         User foundUser = foundUserInList(userId, users);
         if (foundUser != null) {
             users.remove(foundUser);
+
+            saveRepository(users);
         }
-        saveRepository(users);
+
     }
 
     private static User foundUserInList(String userId, List<User> users) {
@@ -77,7 +79,8 @@ public class RepositoryFile implements Repository {
             foundUser.setFirstName(user.getFirstName());
             foundUser.setLastName(user.getLastName());
             foundUser.setPhone(user.getPhone());
+
+            saveRepository(users);
         }
-        saveRepository(users);
     }
 }
